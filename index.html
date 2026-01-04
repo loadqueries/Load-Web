@@ -1344,6 +1344,9 @@
                 linkedInBtn.href = person.linkedin || "#";
                 instaBtn.href = person.instagram || "#";
 
+                linkedInBtn.target = "_blank"; 
+                instaBtn.target = "_blank";
+
                 linkedInBtn.style.display = person.linkedin ? 'inline-block' : 'none';
                 instaBtn.style.display = person.instagram ? 'inline-block' : 'none';
             }
