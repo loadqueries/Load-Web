@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOAD - Content-Driven Brand Building Agency</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Black+Ops+One&family=Inter:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+        }
+        
+        ::-webkit-scrollbar {
+            display: none; 
+        }
+
+        @font-face {
+            font-family: 'Echo Easy';
+            src: url('EchoEasy.woff2') format('woff2'),
+                 url('EchoEasy.woff') format('woff'),
+                 url('EchoEasy.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary: #FF3B00;
+            --primary-dark: #0f0f0f;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc; 
+            --grad-start: #ff2f2f;
+            --grad-end: #f01919;
+            --glow-color: rgba(255, 44, 1, 0.6);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            color: var(--text-primary);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            position: relative;
+        }
+
+        .font-display { font-family: 'Syne', sans-serif; }
+
+        .outline-text {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+            transition: all 0.4s ease;
+        }
+        .outline-text:hover {
+            -webkit-text-stroke: 1px white;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Loader Styles */
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader-line {
+            width: 0%;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.5s ease;
+        }
+
+        /* Marquee Styles */
+        /* Marquee Styles */
+/* Marquee Styles */
+        .marquee-container { 
+            display: flex; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            border-top: 1px solid black; 
+            border-bottom: 1px solid black;
+            /* Removed rotation and scale */
+            margin: 0; 
+            background: white; /* Ensures it looks clean */
+        }
+        .marquee-inner { display: flex; gap: 4vw; animation: scroll 20s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- Global Background --- */
+        .contour-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #050505;
+            overflow: hidden;
+        }
+        
+        .contour-lines {
+            position: absolute;
+            top: -150%; 
+            left: -50%;
+            width: 250%;  
+            height: 400%; 
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cpath d='M0,50 Q150,150 300,50 T600,50' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3Cpath d='M0,150 Q150,250 300,150 T600,150' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3Cpath d='M0,250 Q150,350 300,250 T600,250' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3Cpath d='M0,350 Q150,450 300,350 T600,350' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3Cpath d='M0,450 Q150,550 300,450 T600,450' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3Cpath d='M0,550 Q150,650 300,550 T600,550' fill='none' stroke='white' stroke-width='1.5' opacity='0.15'/%3E%3C/svg%3E");
+            background-size: 600px 600px;
+            animation: contourMove 60s linear infinite;
+            transform: rotate(-10deg);
+        }
+
+        .contour-lines::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'%3E%3Cpath d='M0,100 Q250,0 500,100' fill='none' stroke='white' stroke-width='1' opacity='0.1'/%3E%3Cpath d='M0,200 Q250,100 500,200' fill='none' stroke='white' stroke-width='1' opacity='0.1'/%3E%3Cpath d='M0,300 Q250,200 500,300' fill='none' stroke='white' stroke-width='1' opacity='0.1'/%3E%3Cpath d='M0,400 Q250,300 500,400' fill='none' stroke='white' stroke-width='1' opacity='0.1'/%3E%3C/svg%3E");
+            background-size: 500px 500px;
+            animation: contourMove 45s linear infinite reverse;
+        }
+
+        @keyframes contourMove {
+            0% { transform: rotate(-10deg) translateY(0); }
+            100% { transform: rotate(-10deg) translateY(-600px); }
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.75); 
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px; 
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(255, 81, 47, 0.6)); 
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem; 
+            list-style: none;
+            align-items: center;
+        }
+        .nav-item {
+            position: relative;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-item:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+        .nav-item:hover::after { width: 100%; }
+
+        /* --- Buttons (Nav Button) --- */
+        .btn-juicy {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 30px;
+            color: white;
+            font-size: 16px;
+            font-family: 'Echo Easy', 'Montserrat', sans-serif; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px var(--glow-color);
+        }
+        .btn-juicy:hover {
+            transform: translateY(-2px);
+            background: transparent;
+            border-color: var(--grad-start);
+            color: var(--grad-start);
+            box-shadow: 0 0 25px var(--grad-start);
+            background: rgba(0,0,0,0.8);
+        }
+
+        /* --- Sections --- */
+        .services, .portfolio, .about-section, .team-section {
+            padding: 120px 2rem;
+            position: relative;
+            background: transparent;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px; 
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+        .section-header h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 25px; 
+            letter-spacing: -1px;
+            color: white;
+        }
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        .about-card {
+            position: relative;
+            background: rgba(20, 20, 20, 0.4); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            padding: 35px;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            isolation: isolate;
+        }
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
+        .about-card:hover {
+            transform: translateY(-10px);
+            background: #000; 
+            border-color: var(--grad-start);
+            box-shadow: 0 10px 40px rgba(255, 81, 47, 0.15), inset 0 0 20px rgba(255, 81, 47, 0.05);
+        }
+        .about-card:hover::before {
+            left: 150%;
+            transition: left 0.7s ease;
+        }
+        .about-card h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: white;
+            position: relative;
+        }
+        .about-card ul { list-style: none; position: relative; }
+        .about-card li {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+        .about-card:hover li { color: white; }
+        .about-card li::before {
+            content: '.'; 
+            color: var(--grad-start);
+            font-weight: 900;
+            font-size: 2rem;
+            line-height: 0;
+            margin-top: -5px;
+        }
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .about-card:hover .stat-box {
+            background: rgba(255, 81, 47, 0.1);
+            border-color: var(--grad-start);
+        }
+        .stat-number {
+            display: block;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--grad-start), var(--grad-end));
+            background-clip: none;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* --- "WHAT'S NEXT" --- */
+        .whats-next-wrapper {
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+        }
+        .future-box {
+            width: 100%;
+            max-width: 850px;
+            background: rgba(20, 20, 20, 0.4); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transition: all 0.5s ease;
+        }
+        .future-box:hover {
+            background: #000;
+            border-color: #ff0000;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.4);
+        }
+        .future-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .future-content { position: relative; z-index: 2; }
+        .future-title {
+            font-family: 'Black Ops One', cursive;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .future-desc { color: #aaa; margin-bottom: 30px; font-size: 1.1rem; }
+        .loading-bar-container {
+            width: 100%;
+            max-width: 400px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .loading-bar-fill {
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+            position: absolute;
+            left: -50%;
+            animation: loadingSwipe 2s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--grad-start);
+        }
+        @keyframes loadingSwipe {
+            0% { left: -50%; width: 30%; }
+            50% { left: 30%; width: 60%; }
+            100% { left: 100%; width: 30%; }
+        }
+        .status-badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 5px 15px;
+            background: rgba(255, 81, 47, 0.1);
+            border: 1px solid var(--grad-start);
+            color: var(--grad-start);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            animation: pulseText 2s infinite;
+        }
+        @keyframes pulseText { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+
+        /* --- SERVICE CARDS --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: rgba(40, 40, 40, 0.7); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            height: 100%;
+        }
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+        .service-card:hover::after { left: 100%; }
+        .service-card:hover {
+            border-color: var(--grad-end);
+            transform: translateY(-12px) scale(1.02);
+            background: rgba(50, 50, 50, 0.9);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(255, 81, 47, 0.15);
+        }
+       .service-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+    transition: transform 0.4s ease;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+        .service-card:hover .service-icon { transform: rotate(-10deg) scale(1.1); }
+        .service-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- PLAYBOOK (PROFESSIONAL LIST DESIGN - WIDER & BETTER HOVER) --- */
+        .playbook-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .playbook-item {
+            display: grid;
+            /* Changed 2nd col to 350px to prevent text collision */
+            grid-template-columns: 80px 350px 1fr;
+            align-items: center;
+            padding: 35px 30px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Updated Hover Effects for Playbook */
+        .playbook-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--grad-start);
+            transform: scaleY(0);
+            transition: transform 0.4s ease;
+            transform-origin: bottom;
+        }
+
+        .playbook-item:hover {
+            background: linear-gradient(90deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            transform: scale(1.01) translateX(10px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        
+        .playbook-item:hover::before { transform: scaleY(1); transform-origin: top; }
+
+        .pb-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: rgba(255,255,255,0.15);
+            transition: all 0.4s;
+        }
+        
+        /* Number Glow on Hover */
+        .playbook-item:hover .pb-num { 
+            color: white; 
+            text-shadow: 0 0 15px rgba(255, 81, 47, 0.8);
+            transform: scale(1.1);
+        }
+
+        .pb-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pb-desc {
+            color: #999;
+            font-size: 1rem;
+            line-height: 1.5;
+            transition: color 0.3s;
+        }
+        
+        .playbook-item:hover .pb-desc { color: #ddd; }
+
+
+        /* --- TEAM SECTION (STAGGERED HONEYCOMB) --- */
+        /* Reduced header margin to bring squad closer */
+        #team .section-header {
+            margin-bottom: 30px; 
+        }
+
+        .team-container-honeycomb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .team-row {
+            display: flex;
+            justify-content: center;
+            gap: 200px; /* Horizontal gap */
+            width: 100%;
+        }
+
+        /* The Magic Staggering Logic */
+        .team-row.top {
+            transform: translateX(-80px); /* Shift Top Row Left */
+        }
+
+        .team-row.bottom {
+            margin-top: -20px; /* Pull bottom row up to nestle */
+            transform: translateX(100px); /* Shift Bottom Row Right */
+            position: relative;
+            z-index: 5;
+        }
+
+        .team-member {
+            width: 160px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, z-index 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px) scale(1.1);
+            z-index: 20; /* Ensure popup/hover isn't clipped */
+        }
+
+        .member-photo-wrapper {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 15px;
+            position: relative;
+            border-radius: 50%;
+            padding: 4px; 
+            background: #111;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .member-photo-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--grad-start), var(--grad-end));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .member-icon { width: 65px; height: 65px; color: #555; transition: all 0.3s ease; }
+
+        .team-member:hover .member-photo-wrapper { background: #000; border-color: transparent; }
+        .team-member:hover .member-photo-wrapper::before { opacity: 1; }
+        .team-member:hover .member-icon { color: white; filter: drop-shadow(0 0 5px white); }
+
+        .member-info h3 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 4px; }
+        .member-info span { font-size: 0.75rem; color: var(--grad-end); font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; }
+
+
+        /* --- TEAM POPUP MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+        }
+        .modal-card {
+            background: #050505;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 50px 40px;
+            position: relative;
+            text-align: center;
+            transform: scale(0.8);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+        .close-modal-btn:hover { color: white; }
+        .modal-photo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(255, 81, 47, 0.3);
+        }
+        .modal-photo svg { width: 60px; height: 60px; color: white; }
+        .modal-name { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 700; color: white; margin-bottom: 5px; }
+        .modal-role { font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--grad-end); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block; }
+        .modal-bio { color: #aaa; font-size: 1rem; line-height: 1.7; margin-bottom: 30px; }
+
+
+        /* --- CTA & CONTACT FIXES (Updated Button Styles) --- */
+        .cta-section {
+            padding: 100px 2rem 140px 2rem;
+            text-align: center;
+            position: relative;
+            background: transparent;
+        }
+        
+        .cta-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: transparent; 
+            border: none;
+            box-shadow: none; 
+            padding: 0;
+        }
+        .cta-section h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+        .cta-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 500;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        /* CONTACT GRID LAYOUT */
+        .contact-grid-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .contact-grid-buttons { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .contact-grid-buttons { grid-template-columns: 1fr; }
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 25px 20px;
+            background: transparent;
+            /* DEFAULT: White Stroke (Clean Outline) */
+            border: 1px solid rgba(255, 255, 255, 0.8); 
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            color: white;
+            position: relative;
+        }
+
+        /* HOVER: Solid White Fill */
+        .contact-btn:hover {
+            transform: translateY(-5px);
+            background: white !important; 
+            border-color: white;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+        }
+
+        .contact-btn span {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .contact-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            transition: fill 0.3s;
+        }
+
+        /* SPECIFIC BRAND HOVER COLORS (Text & Icon turn colored on white bg) */
+        .contact-btn.email:hover svg { fill: #FF512F; }
+        .contact-btn.email:hover span { color: #FF512F; }
+
+        .contact-btn.insta:hover svg { fill: #E1306C; }
+        .contact-btn.insta:hover span { color: #E1306C; }
+
+        .contact-btn.whatsapp:hover svg { fill: #25D366; }
+        .contact-btn.whatsapp:hover span { color: #25D366; }
+
+        .contact-btn.phone:hover svg { fill: #007AFF; }
+        .contact-btn.phone:hover span { color: #007AFF; }
+
+
+        .map-wrapper {
+            width: 100%;
+            height: 500px; /* INCREASED HEIGHT */
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: grayscale(100%) invert(92%) contrast(83%);
+        }
+
+        footer {
+            background: rgba(15, 15, 15, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 2rem;
+            color: var(--text-secondary);
+        }
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+       /* ========================================= */
+        /* GOATED MOBILE OPTIMIZATION (APP FEEL)    */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            
+            /* --- 1. HERO & TYPOGRAPHY FIXES (MOBILE) --- */
+            
+            /* 1. Darken background so text is readable */
+            .absolute.inset-0.bg-black\/60 {
+                background-color: rgba(0, 0, 0, 0.85) !important;
+            }
+
+            /* 2. Fix Container to center everything */
+            section.h-screen { 
+                height: 100svh !important; 
+                min-height: 100svh !important;
+                padding-top: 60px; 
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            /* 3. CLONE "DOMINATE" TO LOOK EXACTLY LIKE OTHERS */
+            .hero-main { 
+                /* Match the classes: text-[5vw] font-bold tracking-[0.3em] */
+                font-size: 5vw !important;        
+                font-weight: 700 !important;      
+                letter-spacing: 0.3em !important; 
+                line-height: normal !important;   
+                
+                /* Reset all the special "Dominate" effects */
+                width: auto !important;
+                text-align: center;
+                background: none !important;
+                -webkit-text-fill-color: white !important; /* Force Solid White */
+                -webkit-text-stroke: 0px !important;       /* Remove Outline */
+                filter: none !important;                   /* Remove Glow */
+                opacity: 1 !important;
+                margin: 0 auto !important;
+                display: block !important;
+            }
+
+            /* 4. Fix Spacing between lines */
+            
+            /* This targets the container holding DOMINATE */
+            .overflow-hidden.mt-4.w-full {
+                margin-top: 0 !important; /* Remove the gap */
+                padding-top: 0 !important;
+            }
+            
+            /* Tweak the top stack spacing to be consistent */
+            .space-y-\[-1vw\] > div { margin-bottom: 0px; }
+            
+            .hero-word { 
+                font-size: 5vw !important; 
+                letter-spacing: 0.3em !important;
+                font-weight: 700 !important;
+                opacity: 1 !important;
+            }
+            
+            /* 5. Hide the subtitle text if it clutters the look (Optional) */
+            .hero-sub {
+                font-size: 0.75rem !important;
+                margin-top: 30px !important;
+                opacity: 0.6 !important;
+                padding: 0 20px;
+            }
+            
+            /* --- CLOSE BUTTON --- */
+            .overlay-close-btn {
+                position: absolute;
+                top: 30px;
+                right: 30px;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 45px;
+                font-weight: 300;
+                line-height: 1;
+                cursor: pointer;
+                z-index: 2000;
+                transition: transform 0.3s ease;
+            }
+            .overlay-close-btn:hover {
+                transform: rotate(90deg);
+                color: #FF3B00;
+            }
+
+            /* --- 2. NAVIGATION --- */
+            .nav-links { display: none; }
+            .nav-container { height: 70px; padding: 0 1.5rem; }
+            .logo img { height: 35px; }
+
+            .mobile-toggle {
+                display: block;
+                position: relative;
+                z-index: 2000;
+                width: 30px;
+                height: 20px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+            .mobile-toggle span {
+                display: block;
+                width: 100%;
+                height: 2px;
+                background: white;
+                margin-bottom: 6px;
+                transition: 0.3s;
+                border-radius: 2px;
+            }
+            .mobile-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+            .mobile-toggle.active span:nth-child(2) { opacity: 0; }
+            .mobile-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+            /* Mobile Menu Overlay - Glassmorphism */
+            .mobile-nav-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(5, 5, 5, 0.98);
+                backdrop-filter: blur(20px);
+                z-index: 1500;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.4s ease;
+            }
+            .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+            .mobile-nav-overlay ul { list-style: none; text-align: center; gap: 30px; display: flex; flex-direction: column; }
+            .mobile-nav-overlay a { font-size: 2rem; color: white; text-decoration: none; font-weight: 800; text-transform: uppercase; font-family: 'Syne', sans-serif; letter-spacing: 2px; }
+
+            /* --- 3. HORIZONTAL SWIPE (NETFLIX STYLE) FOR GRIDS --- */
+            /* This fixes the "Long Scroll" issue by making cards swipe left-right */
+            
+            .services, .portfolio, .about-section, .team-section, .cta-section { 
+                padding: 60px 0; /* Remove side padding to allow full-width swipe */
+                overflow: hidden;
+            }
+            
+            .section-header { padding: 0 1.5rem; margin-bottom: 40px; }
+            .section-header h2 { font-size: 2.5rem; line-height: 1; }
+
+            /* Common Scroll Container Logic */
+            .about-grid, .services-grid {
+                display: flex !important;
+                flex-wrap: nowrap !important; /* Force single row */
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 20px;
+                padding: 0 1.5rem 40px 1.5rem; /* Padding for scroll visibility */
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Hide Scrollbar for cleaner look */
+            .about-grid::-webkit-scrollbar, .services-grid::-webkit-scrollbar { display: none; }
+
+            /* Card Sizing for Mobile Swiping */
+            .about-card, .service-card {
+                min-width: 85vw; /* Show slightly less than full width to hint there is more */
+                scroll-snap-align: center;
+                margin-right: 0;
+            }
+
+            /* --- 4. TEAM SECTION FIX (Clean Grid) --- */
+            .team-container-honeycomb { width: 100%; padding: 0 1.5rem; }
+            
+            .team-row { 
+                display: grid !important; 
+                grid-template-columns: repeat(2, 1fr); /* 2 Columns */
+                gap: 20px; 
+                width: 100%; 
+                margin: 0 !important; 
+                transform: none !important; /* Reset Desktop Shifts */
+            }
+            
+            .team-row.top { transform: none !important; margin-bottom: 20px !important; }
+            .team-row.bottom { margin-top: 0 !important; transform: none !important; }
+            
+            .team-member { 
+                width: 100%; 
+                margin-bottom: 10px;
+            }
+            .member-photo-wrapper { width: 90px; height: 90px; margin-bottom: 10px; }
+            .member-icon { width: 40px; height: 40px; }
+            .member-info h3 { font-size: 0.9rem; }
+            .member-info span { font-size: 0.65rem; }
+
+            /* --- 5. PLAYBOOK (VERTICAL STACK IS OK HERE) --- */
+            .playbook-list { padding: 0 1.5rem; }
+            .playbook-item {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+                padding: 25px;
+            }
+            .pb-num { font-size: 3rem; opacity: 0.2; position: absolute; right: 20px; top: 10px; }
+            .pb-title { font-size: 1.4rem; z-index: 2; }
+            .pb-desc { font-size: 0.95rem; z-index: 2; }
+
+            /* --- 6. CONTACT & MAP --- */
+            .cta-container { padding: 0 1.5rem; }
+            .contact-grid-buttons { 
+                grid-template-columns: 1fr; /* Full width buttons */
+                gap: 15px; 
+            }
+            .map-wrapper { height: 250px; border-radius: 12px; }
+
+            /* --- 7. MODAL FIX --- */
+            .modal-card { width: 90%; max-height: 85vh; overflow-y: scroll; padding: 30px 20px; margin-top: 20px; }
+        }
+
+        /* Hide Mobile Toggle on Desktop */
+        @media (min-width: 769px) {
+            .mobile-toggle, .mobile-nav-overlay { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    
+   <div class="contour-bg"><div class="contour-lines"></div></div>
+
+    <div class="loader-screen" id="loader">
+        <div class="w-64 h-[2px] bg-white/10 rounded-full overflow-hidden">
+            <div class="loader-line h-full" id="loaderLine"></div>
+        </div>
+    </div>
+
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <button class="overlay-close-btn" onclick="toggleMobileNav()">×</button>
+        
+        <ul>
+            <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+            <li><a href="#services" onclick="toggleMobileNav()">Services</a></li>
+            <li><a href="#playbook" onclick="toggleMobileNav()">Playbook</a></li>
+            <li><a href="#team" onclick="toggleMobileNav()">Team</a></li>
+            <li><a href="#contact" onclick="toggleMobileNav()">Contact</a></li>
+        </ul>
+    </div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo block">
+                <img src="img/logo.png" alt="LOAD" class="h-12 w-auto object-contain">
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-item">About</a></li>
+                <li><a href="#services" class="nav-item">Services</a></li>
+                <li><a href="#playbook" class="nav-item">Playbook</a></li>
+                <li><a href="#team" class="nav-item">Team</a></li>
+                <li><a href="#contact" class="nav-item">Contact</a></li>
+                <li><a href="mailto:loadqueries@gmail.com" class="btn-juicy" style="padding: 10px 25px; font-size: 0.9rem;">Let's Build</a></li>
+            </ul>
+
+            <button class="mobile-toggle" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden" style="margin-bottom: 0;">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-black/60 z-10"></div> 
+            <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-80">
+    <source src="vid/vertical_bg.mp4" type="video/mp4" media="(max-width: 768px)">
+    <source src="vid/bg_video.mp4" type="video/mp4">
+</video>
+        </div>
+
+        <div class="relative z-20 flex flex-col items-center justify-center text-center px-4">
+            <div class="space-y-[-1vw] md:space-y-[-1.5vw]">
+                <div class="overflow-hidden">
+                    <span class="hero-word block font-display text-[5vw] md:text-[4vw] font-bold tracking-[0.3em] text-white opacity-0 translate-y-20">LEVERAGE</span>
+                </div>
+                <div class="overflow-hidden">
+                    <span class="hero-word block font-display text-[5vw] md:text-[4vw] font-bold tracking-[0.3em] text-white opacity-0 translate-y-20">OPTIMIZE</span>
+                </div>
+                <div class="overflow-hidden">
+                    <span class="hero-word block font-display text-[5vw] md:text-[4vw] font-bold tracking-[0.3em] text-white opacity-0 translate-y-20">ACCELERATE</span>
+                </div>
+            </div>
+
+            <div class="overflow-hidden mt-4 w-full">
+                <h1 class="hero-main opacity-0 translate-y-32 font-display text-[13vw] md:text-[10vw] leading-[0.85] font-black uppercase tracking-tighter text-white outline-text cursor-default max-w-[95vw] md:max-w-[90vw] mx-auto">
+                    DOMINATE
+                </h1>
+            </div>
+
+            <p class="hero-sub mt-8 md:mt-12 max-w-md text-sm text-gray-400 font-mono tracking-wide opacity-0 text-center border-l-0 md:border-l border-white/20 pl-0 md:pl-4 ml-0 md:ml-4">
+                Systematic brand acceleration.<br>
+                From obscurity to authority.
+            </p>
+        </div>
+    </section>
+
+    <div class="py-4 md:py-8 bg-white text-black z-30 relative border-y border-black overflow-hidden mb-20">
+    <div class="marquee-container">
+        <div class="marquee-inner font-display text-xl md:text-4xl font-bold uppercase tracking-tight">
+            <span>Strategy</span> <span>•</span> <span>Identity</span> <span>•</span> <span>Production</span> <span>•</span> <span>Influence</span> <span>•</span> 
+            <span>Strategy</span> <span>•</span> <span>Identity</span> <span>•</span> <span>Production</span> <span>•</span> <span>Influence</span> <span>•</span>
+            <span>Strategy</span> <span>•</span> <span>Identity</span> <span>•</span> <span>Production</span> <span>•</span> <span>Influence</span> <span>•</span>
+            <span>Strategy</span> <span>•</span> <span>Identity</span> <span>•</span> <span>Production</span> <span>•</span> <span>Influence</span> <span>•</span>
+        </div>
+    </div>
+</div>
+
+    <section class="about-section" id="about">
+        <div class="section-header">
+            <h2>The DNA</h2>
+            <p>We don't design for aesthetics alone. We build brands that perform.</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Who We Are</h3>
+                <p style="margin-bottom: 20px; color: #ccc; line-height: 1.6;">
+                    LOAD is a content-driven brand building agency. We exist to help bold ideas break through the noise and build presence that actually matters.
+                </p>
+                <ul>
+                    <li>Startups & Founders</li>
+                    <li>D2C & Lifestyle Brands</li>
+                    <li>Creators & Personal Brands</li>
+                    <li>Youth-led Companies</li>
+                </ul>
+            </div>
+
+            <div class="about-card">
+                <h3>The Advantage</h3>
+                <p style="margin-bottom: 20px; color: #ccc;">
+                    Why we are different from the rest.
+                </p>
+                <ul>
+                    <li>Creative + Tech under one roof</li>
+                    <li>Founder-led execution</li>
+                    <li>Youth-first digital thinking</li>
+                    <li>Data-backed decisions</li>
+                </ul>
+            </div>
+
+            <div class="about-card">
+                <h3>Outcomes</h3>
+                <p style="color: #ccc;">We evaluate our work on outcomes that matter, not just vanity metrics.</p>
+                
+                <div class="stat-box">
+                    <span class="stat-number">High</span>
+                    <span class="stat-label">Engagement</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">Real</span>
+                    <span class="stat-label">Conversions</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="whats-next-wrapper">
+            <div class="future-box">
+                <div class="future-bg"></div>
+                <div class="future-content">
+                    <div class="future-title">What's Next</div>
+                    <p class="future-desc">
+                        We are building scalable creator ecosystems and tech-enabled brand platforms. This is the start of what's being built, not the finish line.
+                    </p>
+                    
+                    <div class="loading-bar-container">
+                        <div class="loading-bar-fill"></div>
+                    </div>
+                    
+                    <span class="status-badge">SYSTEM STATUS: BUILDING FUTURE</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="services-container">
+            <div class="section-header">
+                <h2>What We Build</h2>
+                <p>Merging storytelling, design, and data to create brands that connect, grow, and endure.</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Brand Strategy & Identity</h3>
+                    <p>From strategy to logos and messaging, we define and design brands that are clear, consistent, and recognizable.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📖</div>
+                    <h3>Content & Storytelling</h3>
+                    <p>We create and amplify stories that resonate, engage, and influence audiences across digital mediums.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🤝</div>
+                    <h3>Social & Community Growth</h3>
+                    <p>From first followers to loyal audiences, we help brands build communities that grow and stay.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Websites & Digital Exp.</h3>
+                    <p>High-performance websites and digital experiences optimized for clarity, performance, and conversion.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Technical Assistance</h3>
+                    <p>We provide comprehensive technical support for your business, including automations and system optimizations.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔥</div>
+                    <h3>Creator Collaborations</h3>
+                    <p>Strategic campaigns and collaborations that expand your reach and build authentic authority.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio" id="playbook">
+        <div class="services-container">
+            <div class="section-header">
+                <h2>The Playbook</h2>
+                <p>We don't just build brands. We build digital assets using a proven framework.</p>
+            </div>
+            
+            <div class="playbook-list">
+                <div class="playbook-item">
+                    <div class="pb-num">01</div>
+                    <div class="pb-title">Leverage</div>
+                    <div class="pb-desc">We uncover your brand's strengths, audience insights, and digital opportunities to find your unique angle that competitors can't touch.</div>
+                </div>
+                <div class="playbook-item">
+                    <div class="pb-num">02</div>
+                    <div class="pb-title">Optimize</div>
+                    <div class="pb-desc">We refine brand assets, content, websites, and systems for maximum clarity, performance, and conversion before driving traffic.</div>
+                </div>
+                <div class="playbook-item">
+                    <div class="pb-num">03</div>
+                    <div class="pb-title">Accelerate</div>
+                    <div class="pb-desc">We deploy content, technology, SEO, and strategic campaigns across platforms to drive rapid visibility and initial traction.</div>
+                </div>
+                <div class="playbook-item">
+                    <div class="pb-num">04</div>
+                    <div class="pb-title">Scale</div>
+                    <div class="pb-desc">We double down on what works, building long-term brand authority, community, and sustainable growth systems.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section" id="team">
+        <div class="section-header">
+            <h2>The Squad</h2>
+            <p>Young, driven builders focused on creating work that delivers.</p>
+        </div>
+
+        <div class="team-container-honeycomb">
+            <div class="team-row top">
+                <div class="team-member" onclick="openModal(0)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/ceo.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Sudhan M</h3>
+                        <span>CEO</span>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="openModal(1)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cco.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Varshini Krishnan</h3>
+                        <span>CCO</span>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="openModal(2)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/coo.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Amritha Lakshmi</h3>
+                        <span>COO</span>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="openModal(3)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cto.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Jeyaraman</h3>
+                        <span>CTO</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-row bottom">
+                <div class="team-member" onclick="openModal(4)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cdo.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Suhas Armit</h3>
+                        <span>CDO</span>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="openModal(5)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cfo.jpeg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Abishek Kumar</h3>
+                        <span>CFO</span>
+                    </div>
+                </div>
+
+                <div class="team-member" onclick="openModal(6)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cgo.jpeg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Monika S</h3>
+                        <span>CGO</span>
+                    </div>
+                </div>
+                
+                <div class="team-member" onclick="openModal(7)">
+                    <div class="member-photo-wrapper">
+                        <img src="img/team/cso.jpg" class="w-full h-full rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <svg class="member-icon hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    </div>
+                    <div class="member-info">
+                        <h3>Manish</h3>
+                        <span>CSO</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="teamModal">
+        <div class="modal-card">
+            <button class="close-modal-btn" onclick="closeModal()">×</button>
+            <div class="modal-photo" id="modalPhoto"></div>
+            <h3 class="modal-name" id="modalName">Name</h3>
+            <span class="modal-role" id="modalRole">Role</span>
+            <p class="modal-bio" id="modalBio">Bio text here...</p>
+            <div class="flex justify-center gap-4">
+                <a href="#" class="text-white hover:text-[#0077b5] transition-colors"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                
+                <a href="#" class="text-white hover:text-[#E1306C] transition-colors"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            </div>
+        </div>
+    </div>
+
+    <section class="cta-section" id="contact">
+        <div class="cta-container">
+            <h2>Ready to Dominate?</h2>
+            <p>If you're ready to build a brand, tell your story, and scale your presence, let's start the conversation.</p>
+            
+            <div class="contact-grid-buttons">
+                <a href="mailto:loadqueries@gmail.com" class="contact-btn email">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span>Send Email</span>
+                </a>
+
+                <a href="https://instagram.com/loadxstudios/" target="_blank" class="contact-btn insta">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span>DM Us</span>
+                </a>
+
+                <a href="https://wa.me/919025268869?text=i%20have%20redirected%20here%20from%20the%20link%20on%20website" target="_blank" class="contact-btn whatsapp">
+                    <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Chat Now</span>
+                </a>
+                
+                <a href="tel:+919025268869" class="contact-btn phone">
+                    <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.44-5.15-3.75-6.59-6.59l1.97-1.57c.23-.23.33-.55.24-1.01a11.55 11.55 0 0 0-.56-3.53.97.97 0 0 0-1-.77H4.51c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.48c0-.55-.45-1-1.02-1z"/></svg>
+                    <span>Call Us</span>
+                </a>
+            </div>
+
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d348.51900975948007!2d77.39836544406774!3d8.78207354921114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b043b6002272e05%3A0x65012a7ac95ff27f!2sMURUGAN%20ENTERPRISES!5e0!3m2!1sen!2sin!4v1767074093520!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>© 2025 LOAD. Based in India | Working Globally.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Loader & Animation Sequence
+        window.addEventListener("load", () => {
+            const tl = gsap.timeline();
+            
+            tl.to("#loaderLine", {
+                width: "100%",
+                duration: 0.8,
+                ease: "power2.inOut"
+            })
+            .to("#loader", {
+                y: "-100%",
+                duration: 0.8,
+                ease: "expo.inOut",
+                delay: 0.2
+            })
+            .add(() => {
+                initAnimations();
+            }, "-=0.5");
+        });
+
+        // 2. Main Site Animations
+        function initAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const heroTl = gsap.timeline();
+            heroTl.to(".hero-word", {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.1,
+                ease: "power4.out"
+            })
+            .to(".hero-main", {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power3.out"
+            }, "-=0.8")
+            .to(".hero-sub", {
+                opacity: 1,
+                duration: 1
+            }, "-=0.5");
+        }
+        
+        // 3. Mobile Nav Toggle Function
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobileNav');
+            const toggle = document.querySelector('.mobile-toggle');
+            
+            nav.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+      // 4. TEAM DATA & MODAL LOGIC
+        const teamData = [
+            { 
+                name: "Sudhan M", 
+                role: "CEO", 
+                bio: "Visionary leader focused on innovation and long-term strategy for brand growth.",
+                photo: "img/team/ceo.jpg",
+                linkedin: "https://www.linkedin.com/in/sudhan-m-b30141399?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", 
+                instagram: "https://www.instagram.com/sudhanmurugan_?igsh=eGlxdWZoNzRpdmU3"
+            },
+            { 
+                name: "Name 2", 
+                role: "CCO", 
+                bio: "Creative director crafting compelling narratives and visual identities.",
+                photo: "img/team/cco.jpg",
+                linkedin: "", 
+                instagram: "https://www.instagram.com/varshini_krishnan06?igsh=eXhwOXJpdWEzMnBk"
+            },
+            { 
+                name: "Amritha Lakshmi", 
+                role: "COO", 
+                bio: "A future-focused engineer who leads with words, vision, and action. Author and speaker driven to inspire confidence and create change.",
+                photo: "img/team/coo.jpg",
+                linkedin: "https://www.linkedin.com/in/amritha-lakshmi-194088309", 
+                instagram: "https://www.instagram.com/ahtirma_13?igsh=MW1kc2N0ejdpZ296NQ=="
+            },
+            { 
+                name: "Jeyaraman", 
+                role: "CTO", 
+                bio: "Technical authority responsible for turning vision into a real, scalable product and making technical decisions that determine the company's growth.",
+                photo: "img/team/cto.jpg",
+                linkedin: "https://www.linkedin.com/in/jeyaraman-v-55254b348/", 
+                instagram: "https://www.instagram.com/vjr17_official/"
+            },
+            { 
+                name: "Suhas Armit", 
+                role: "CDO", 
+                bio: "Driving digital transformation and optimizing user experiences.",
+                photo: "img/team/cdo.jpg",
+                linkedin: "https://www.linkedin.com/in/suhash-amrit-9b08b2375?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", 
+                instagram: "https://www.instagram.com/_suhash_amrit_/"
+            },
+            { 
+                name: "Abishek Kumar", 
+                role: "CFO", 
+                bio: "Financial expert managing fiscal health and sustainable growth strategies.",
+                photo: "img/team/cfo.jpeg",
+                linkedin: "https://www.linkedin.com/in/abishek-kumar-71365b3a2?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", 
+                instagram: "https://www.instagram.com/abi_shek_1714?igsh=YXVleXltM2xuYmhx"
+            },
+            { 
+                name: "Monika S", 
+                role: "CGO", 
+                bio: "Empowering growth by reimagining processes through innovation and smart execution.",
+                photo: "img/team/cgo.jpeg",
+                linkedin: "https://www.linkedin.com/in/monika-s-05b379321?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", 
+                instagram: "https://www.instagram.com/_moni._444?igsh=MWVocmZteDdicDJ4ZQ=="
+            },
+            { 
+                name: "Manish", 
+                role: "CSO", 
+                bio: "Strategic thinker identifying new opportunities and market trends.",
+                photo: "img/team/cso.jpg",
+                linkedin: "", 
+                instagram: "https://www.instagram.com/manisthetics/"
+            }
+        ];
+
+        const modalOverlay = document.getElementById('teamModal');
+        const modalName = document.getElementById('modalName');
+        const modalRole = document.getElementById('modalRole');
+        const modalBio = document.getElementById('modalBio');
+        const modalPhoto = document.getElementById('modalPhoto');
+
+        function openModal(index) {
+            const person = teamData[index];
+            modalName.innerText = person.name;
+            modalRole.innerText = person.role;
+            modalBio.innerText = person.bio;
+            
+            // Update Photo in Modal
+            if(person.photo) {
+                // Use the image
+                modalPhoto.innerHTML = `<img src="${person.photo}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.style.display='none'">`;
+            } else {
+                // Fallback Icon
+                modalPhoto.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:60px;height:60px;color:white;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+            }
+
+            // Update Social Links
+            // We need to grab the buttons dynamically since they didn't have IDs in your original file
+            const socialLinks = document.querySelectorAll('.modal-card a');
+            if(socialLinks.length >= 2) {
+                const linkedInBtn = socialLinks[0];
+                const instaBtn = socialLinks[1];
+
+                linkedInBtn.href = person.linkedin || "#";
+                instaBtn.href = person.instagram || "#";
+
+                // Optional: Hide buttons if link is empty
+                linkedInBtn.style.display = person.linkedin ? 'inline-block' : 'none';
+                instaBtn.style.display = person.instagram ? 'inline-block' : 'none';
+            }
+
+            modalOverlay.style.display = 'flex';
+            
+            gsap.fromTo(modalOverlay, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+            gsap.fromTo(".modal-card", 
+                { scale: 0.8, opacity: 0, y: 50 }, 
+                { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" }
+            );
+        }
+
+        function closeModal() {
+            gsap.to(".modal-card", { scale: 0.8, opacity: 0, y: 50, duration: 0.3 });
+            gsap.to(modalOverlay, { 
+                opacity: 0, 
+                duration: 0.3, 
+                onComplete: () => { modalOverlay.style.display = 'none'; } 
+            });
+        }
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        </script>
+    </body>
+</html>
