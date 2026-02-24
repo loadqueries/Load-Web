@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Team Showcase</title>
+    <style>
+        :root {
+            --depth: 500px; /* Distance between frames */
+            --bg-color: #050505;
+            --text-color: #ffffff;
+            --accent-color: #FF4D4D;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Helvetica Neue', sans-serif;
+            overflow-x: hidden;
+            /* Hide the scrollbar but keep functionality */
+            scrollbar-width: none; 
+        }
+        body::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        /* The container for the 3D space */
+        .viewport {
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            perspective: 1000px; /* Creates the 3D depth */
+            overflow: hidden;
+        }
+
+        /* The world that moves towards the camera */
+        .world {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            position: absolute;
+        }
+
+        /* Individual Member Card */
+        .frame {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+
+        /* Layout for the content inside the frame */
+        .content-layout {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            width: 80%;
+            max-width: 1200px;
+            padding: 2rem;
+            /* Glassmorphism background for readability */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* PHOTO STYLES */
+        .photo-wrapper {
+            width: 300px;
+            height: 300px;
+            flex-shrink: 0;
+            position: relative;
+            /* The 3D Tilt Logic */
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* TEXT STYLES */
+        .text-wrapper {
+            flex: 1;
+            opacity: 0; /* Hidden by default, fades in via JS */
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .designation {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        /* ALTERNATING LAYOUTS 
+           We use specific classes for Left vs Right alignment 
+        */
+
+        /* TYPE A: Photo Left (Tilted Right), Text Right */
+        .layout-left .content-layout {
+            flex-direction: row;
+        }
+        .layout-left .photo-wrapper {
+            /* Tilted to face the text on the right */
+            transform: perspective(1000px) rotateY(25deg);
+        }
+
+        /* TYPE B: Photo Right (Tilted Left), Text Left */
+        .layout-right .content-layout {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+        .layout-right .photo-wrapper {
+            /* Tilted to face the text on the left */
+            transform: perspective(1000px) rotateY(-25deg);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="scroll-track" style="height: 4000px;"></div>
+
+    <div class="viewport">
+        <div class="world" id="world">
+            
+            <div class="frame layout-left">
+                <div class="content-layout">
+                    <div class="photo-wrapper">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 1">
+                    </div>
+                    <div class="text-wrapper">
+                        <div class="designation">Chief Executive Officer</div>
+                        <h2>Julian Reed</h2>
+                        <p>A visionary leader with over 15 years of experience in tech. Julian believes in sustainable code and leads the team with empathy and precision. He loves hiking on weekends.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame layout-right">
+                <div class="content-layout">
+                    <div class="photo-wrapper">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 2">
+                    </div>
+                    <div class="text-wrapper">
+                        <div class="designation">Lead Product Designer</div>
+                        <h2>Sarah Jenkins</h2>
+                        <p>Sarah turns complex problems into intuitive designs. With a background in psychology, she ensures every pixel serves a user need. She is an avid coffee connoisseur.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame layout-left">
+                <div class="content-layout">
+                    <div class="photo-wrapper">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 3">
+                    </div>
+                    <div class="text-wrapper">
+                        <div class="designation">CTO & Founder</div>
+                        <h2>Marcus Chen</h2>
+                        <p>The brain behind the architecture. Marcus specializes in scalable systems and AI integration. He spends his free time building custom mechanical keyboards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame layout-right">
+                <div class="content-layout">
+                    <div class="photo-wrapper">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 4">
+                    </div>
+                    <div class="text-wrapper">
+                        <div class="designation">Marketing Director</div>
+                        <h2>Elena Rossi</h2>
+                        <p>Elena tells the stories that matter. She connects our technology with the people who need it most through creative campaigns and genuine community engagement.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const world = document.getElementById('world');
+        const frames = document.querySelectorAll('.frame');
+        
+        // Configuration
+        const Z_SPACING = -1000; // Distance between each person on Z-axis
+        let lastScrollY = 0;
+
+        // Set initial positions
+        frames.forEach((frame, i) => {
+            // Position them deep into the screen
+            frame.setAttribute('data-z', i * Z_SPACING);
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.pageYOffset;
+            
+            // Loop through every frame and calculate its new 3D position
+            frames.forEach((frame, i) => {
+                const baseZ = parseFloat(frame.getAttribute('data-z'));
+                
+                // As we scroll down (positive Y), we move the world towards us (positive Z)
+                // We multiply scrollY by 3 to make the movement feel faster/smoother
+                let translateZ = baseZ + (scrollY * 3); 
+
+                // 1. GHOST OPACITY LOGIC
+                // We want them visible when they are in front of the camera, 
+                // but faded when they are deep in the background.
+                // Range: If Z is -3000 (far away) -> Opacity 0.1
+                // If Z is 0 (active) -> Opacity 1
+                
+                let opacity = 0;
+                
+                if(translateZ > -200 && translateZ < 500) {
+                    // Active View (Near camera)
+                    opacity = 1;
+                    frame.style.pointerEvents = 'all';
+                    // Fade in text
+                    frame.querySelector('.text-wrapper').style.opacity = '1';
+                    frame.querySelector('.text-wrapper').style.transform = 'translateY(0)';
+                } else if (translateZ < -200) {
+                    // Coming up in background (The "Ghost" effect)
+                    // Map distance to opacity (closer = more opaque)
+                    opacity = 1 + (translateZ / 1500); 
+                    opacity = Math.max(0.1, opacity); // Min opacity 0.1
+                    
+                    frame.style.pointerEvents = 'none';
+                    // Hide text in background mode to keep focus on photo
+                    frame.querySelector('.text-wrapper').style.opacity = '0';
+                    frame.querySelector('.text-wrapper').style.transform = 'translateY(20px)';
+                } else {
+                    // Already passed the camera (behind us)
+                    opacity = 0;
+                }
+
+                frame.style.transform = `translate3d(0, 0, ${translateZ}px)`;
+                frame.style.opacity = opacity;
+            });
+
+            lastScrollY = scrollY;
+        });
+
+        // Trigger initial render
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
